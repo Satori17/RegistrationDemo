@@ -16,6 +16,8 @@
 		587DB6342878E5EF0086CA22 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587DB6332878E5EF0086CA22 /* RegisterVC.swift */; };
 		587DB6362879696B0086CA22 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587DB6352879696B0086CA22 /* DetailVC.swift */; };
 		587DB638287977470086CA22 /* BottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587DB637287977470086CA22 /* BottomSheetVC.swift */; };
+		587DB63B287AB8BE0086CA22 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587DB63A287AB8BD0086CA22 /* TitleView.swift */; };
+		587DB63D287AB8CC0086CA22 /* TitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 587DB63C287AB8CC0086CA22 /* TitleView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		587DB6332878E5EF0086CA22 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		587DB6352879696B0086CA22 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		587DB637287977470086CA22 /* BottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetVC.swift; sourceTree = "<group>"; };
+		587DB63A287AB8BD0086CA22 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
+		587DB63C287AB8CC0086CA22 /* TitleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 			children = (
 				587DB61F2878CE280086CA22 /* AppDelegate.swift */,
 				587DB6212878CE280086CA22 /* SceneDelegate.swift */,
+				587DB639287AB8980086CA22 /* TitleView */,
 				587DB6232878CE280086CA22 /* LoginVC.swift */,
 				587DB6332878E5EF0086CA22 /* RegisterVC.swift */,
 				587DB6352879696B0086CA22 /* DetailVC.swift */,
@@ -74,6 +79,15 @@
 				587DB62D2878CE290086CA22 /* Info.plist */,
 			);
 			path = Saba_Khitaridze_Task_14;
+			sourceTree = "<group>";
+		};
+		587DB639287AB8980086CA22 /* TitleView */ = {
+			isa = PBXGroup;
+			children = (
+				587DB63A287AB8BD0086CA22 /* TitleView.swift */,
+				587DB63C287AB8CC0086CA22 /* TitleView.xib */,
+			);
+			path = TitleView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +151,7 @@
 				587DB62C2878CE290086CA22 /* LaunchScreen.storyboard in Resources */,
 				587DB6292878CE290086CA22 /* Assets.xcassets in Resources */,
 				587DB6272878CE280086CA22 /* Main.storyboard in Resources */,
+				587DB63D287AB8CC0086CA22 /* TitleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +165,7 @@
 				587DB6362879696B0086CA22 /* DetailVC.swift in Sources */,
 				587DB6242878CE280086CA22 /* LoginVC.swift in Sources */,
 				587DB6342878E5EF0086CA22 /* RegisterVC.swift in Sources */,
+				587DB63B287AB8BE0086CA22 /* TitleView.swift in Sources */,
 				587DB638287977470086CA22 /* BottomSheetVC.swift in Sources */,
 				587DB6202878CE280086CA22 /* AppDelegate.swift in Sources */,
 				587DB6222878CE280086CA22 /* SceneDelegate.swift in Sources */,

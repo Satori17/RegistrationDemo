@@ -24,18 +24,26 @@ class RegisterVC: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmPasswordTextField: UITextField!
+    //uiview
+    @IBOutlet weak var registerView: TitleView! {
+        didSet {
+            registerView.titleLabel.text = "Register"
+        }
+    }
+    
     
     //MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = .white
         setupTextFieldDelegate()
         setupBackgroundTap()
     }
     
     //MARK: - Vars
     
-    var isEverythingFilled = false
+    private var isEveryTextCorrectlyFilled = false
     var delegate: UserAccountDelegate?
     
     //MARK: - IBAction
@@ -47,15 +55,14 @@ class RegisterVC: UIViewController {
                 isTextInputed(in: textField)
             }
         })
-        
-        if isEverythingFilled { delegate?.getUserDetails(from: self) }
+        if isEveryTextCorrectlyFilled { delegate?.getUserDetails(from: self) }
     }
     
     //MARK: - Methods
     
-    func isTextInputed(in textField: UITextField) {
+    private func isTextInputed(in textField: UITextField) {
         if usernameTextField.hasText, emailTextField.hasText, passwordTextField.hasText, confirmPasswordTextField.hasText {
-            isEverythingFilled = true
+                validatePassword(check: passwordTextField.text == confirmPasswordTextField.text)
         } else if !textField.hasText {
             switch textField {
             case usernameTextField:
@@ -74,6 +81,23 @@ class RegisterVC: UIViewController {
                 print("error checking textFields")
             }
         }
+    }
+    
+    //password validation checker
+    private func isValid(password: String?) -> Bool {
+        let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{8,}$"
+        let passwordPred = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
+        return passwordPred.evaluate(with: password)
+    }
+    
+    private func getAlert(with title: String) {
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+        present(alert, animated: true)
+    }
+    
+    private func validatePassword(check condition: Bool) {
+        condition ? (isValid(password: passwordTextField.text) ? isEveryTextCorrectlyFilled = true : getAlert(with: "This password is not secure")) : getAlert(with: "Passwords doesn't match")
     }
 }
 
@@ -94,16 +118,16 @@ extension RegisterVC: textFieldHelpers {
     func updatePlaceHolderLabel(of textField: UITextField) {
         switch textField {
         case usernameTextField:
-            usernameLabel.text = textField.hasText ? "Username" : ""
+            usernameLabel.text = textField.hasText ? InputType.Username.rawValue : ""
             usernameLabel.textColor = .lightGray
         case emailTextField:
-            emailLabel.text = textField.hasText ? "Email" : ""
+            emailLabel.text = textField.hasText ? InputType.Email.rawValue : ""
             emailLabel.textColor = .lightGray
         case passwordTextField:
-            passwordLabel.text = textField.hasText ? "Password" : ""
+            passwordLabel.text = textField.hasText ? InputType.Password.rawValue : ""
             passwordLabel.textColor = .lightGray
         case confirmPasswordTextField:
-            confirmPasswordLabel.text = textField.hasText ? "Confirm password" : ""
+            confirmPasswordLabel.text = textField.hasText ? InputType.Confirm.rawValue : ""
             confirmPasswordLabel.textColor = .lightGray
         default:
             usernameLabel.text = ""
@@ -121,5 +145,4 @@ extension RegisterVC: textFieldHelpers {
     @objc func backgroundTap() {
         view.endEditing(false)
     }
-    
 }

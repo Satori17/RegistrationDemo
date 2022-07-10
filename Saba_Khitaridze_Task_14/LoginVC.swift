@@ -15,6 +15,14 @@ protocol textFieldHelpers {
     func backgroundTap()
 }
 
+enum InputType: String {
+    case Username
+    case Email
+    case Password
+    case Confirm = "Confirm password"
+}
+
+
 class LoginVC: UIViewController {
     
 
@@ -25,12 +33,18 @@ class LoginVC: UIViewController {
     //textfields
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-
+    //uiview
+    @IBOutlet weak var loginView: TitleView! {
+        didSet {
+            loginView.titleLabel.text = "Login"
+        }
+    }
+    
     
     //MARK: - Vars
-    
-    var username = ""
-    var password = ""
+    private var username = ""
+    private var email = ""
+    private var password = ""
     
     //MARK: - View Lifecycle
     
@@ -40,28 +54,43 @@ class LoginVC: UIViewController {
         setupBackgroundTap()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        usernameTextField.text = username
-        passwordTextField.text = password
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        //clearing password textfields when user logs out
+        passwordTextField.text = ""
+        passwordLabel.text = ""
     }
-
     
-    //MARK: - IBActions
+    //MARK: - IBAction
     
     @IBAction func signInBtnPressed(_ sender: UIButton) {
-        
+        signInHelper(check: usernameTextField.text == username && passwordTextField.text == password)
     }
     
     
-    @IBAction func signUpBtnPressed(_ sender: UIButton) {        
-        
+    //MARK: - Methods
+    
+    private func signInHelper(check condition: Bool) {
+        if condition {
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailVC") as? DetailVC
+            if let destinationVC = vc {
+                destinationVC.accountName = username
+                destinationVC.accountEmail = email
+                destinationVC.modalPresentationStyle = .fullScreen
+                present(destinationVC, animated: true)
+            }
+        } else {
+            let alert = UIAlertController(title: "Incorrect Credentials", message: "Your username or password is incorrect. Please try again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel))
+            present(alert, animated: true)
+        }
     }
 }
 
 
 extension LoginVC: textFieldHelpers, UserAccountDelegate {
     
+    //UserAccountDelegate
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destination = segue.destination as? RegisterVC
         if let destinationVC = destination {
@@ -72,17 +101,16 @@ extension LoginVC: textFieldHelpers, UserAccountDelegate {
     func getUserDetails(from vc: RegisterVC) {
         vc.navigationController?.popViewController(animated: true)
         
-        guard let usernameText = vc.usernameTextField.text, let passwordText = vc.passwordTextField.text else {
+        guard let usernameText = vc.usernameTextField.text, let emailText = vc.emailTextField.text, let passwordText = vc.passwordTextField.text else {
             print("error fetching text from textfield")
             return
         }
         username = usernameText
+        email = emailText
         password = passwordText
-        print(username)
-        print(password)
     }
     
-    
+    //textFieldHelpers
     func setupTextFieldDelegate() {
         usernameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -95,9 +123,9 @@ extension LoginVC: textFieldHelpers, UserAccountDelegate {
     func updatePlaceHolderLabel(of textField: UITextField) {
         switch textField {
         case usernameTextField:
-            usernameLabel.text = textField.hasText ? "Username" : ""
+            usernameLabel.text = textField.hasText ? InputType.Username.rawValue : ""
         case passwordTextField:
-            passwordLabel.text = textField.hasText ? "Password" : ""
+            passwordLabel.text = textField.hasText ? InputType.Password.rawValue : ""
         default:
             usernameLabel.text = ""
             passwordLabel.text = ""
